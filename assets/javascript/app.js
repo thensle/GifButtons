@@ -3,30 +3,48 @@ $(document).ready(function(){
 	var gifArray = ["Bebe Zahara Benet", "Tyra Sanchez", "Raja", "Sharon Needles", "Jinkx Monsoon", "Bianca Del Rio", "Violet Chachki", "Bob the Drag Queen", "Chad Michaels", "Alaska"];
 
 createButtons();
-var string = "Tara Hensle"
-
 
 //EVENT LISTENERS
 
 // Displaying gifs for a button click
 $(".gif-button").on("click", function(){
+	$(".gif-display").empty();
 	var searchTerm = $(this).attr("value");
 	var searchTermEdited = searchTerm.replace(/\s/g, '+');
+	var resultsReturned = 10;
 	console.log(searchTermEdited);
 
 
-	var query = "https://api.giphy.com/v1/gifs/search?q=" + searchTermEdited + "&limit=10&api_key=dc6zaTOxFJmzC";
+	var query = "http://api.giphy.com/v1/gifs/search?q=" + searchTermEdited + "&api_key=dc6zaTOxFJmzC" + "&limit=" + resultsReturned;
 
 
 	$.ajax({
-		URL: query,
+		url: query,
 		method: "GET"
-	}).done(function(){
+	}).done(function(gif){
+		for(var i = 0; i <= resultsReturned; i++){
+			var gifImage = $("<img>");
+			gifImage.attr({
+				"src": gif.data[i].images.fixed_width_still.url,
+				"gif-still": gif.data[i].images.fixed_width_still.url,
+				"gif-animated": gif.data[i].images.fixed_width.url,
+				"gif-state": "still",
+				"type": "gif"
+			});
 		
 
-	}).error(function(){
+			var rating = "Rating: " + gif.data[i].rating;
+			var ratingPlace = $("<p>" + rating + "</p>");
 
+			$(".gif-display").append(ratingPlace);
+			$(".gif-display").append(gifImage);
+		};
 	});
+	// .err(function(){
+	// 	$(".gif-display").html("Oops! Something didn't quite work OK... Try again!");
+	// })
+
+
 });
 
 
@@ -55,16 +73,6 @@ function createButtons(){
 		$(".gif-buttons").append(newButton);
 	};
 
-	console.log(string.charAt(0));
-
 };
 
-//Replacing Spaces with
-function replaceSpacesWithPluses(){ 
-	
-
-
-
-
-};
 });
