@@ -20,5 +20,6 @@ body{
 }
 
 .gif-display{
-	display:inline;
+	display:inline-block;
+	margin-left: 10%;
 }
