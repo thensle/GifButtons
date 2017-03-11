@@ -1,13 +1,13 @@
 $(document).ready(function(){
 	//Pre-populated button options
-	var gifArray = ["RuPaul's Drag Race", "House", "Friends", "How I Met Your Mother", "Arrested Development"];
+	var gifArray = ["RuPaul's Drag Race", "Daria", "Friends", "How I Met Your Mother", "Arrested Development"];
 
 createButtons();
 
 //EVENT LISTENERS
 
 // Displaying gifs for a button click
-$(".gif-button").on("click", function(){
+$(document).on("click", ".gif-button", function(){
 	$(".gif-display").empty();
 	var searchTerm = $(this).attr("value");
 	var searchTermEdited = searchTerm.replace(/\s/g, '+');
@@ -18,14 +18,17 @@ $(".gif-button").on("click", function(){
 	$.ajax({
 		url: query,
 		method: "GET"
+
 	}).done(function(gif){
 		console.log(gif);
-		for(var i = 0; i <= resultsReturned; i++){
+
+		for(var i = 0; i < resultsReturned; i++){
+
 			var gifImage = $("<img>");
 			gifImage.attr({
-				"src": gif.data[i].images.fixed_width_still.url,
-				"gif-still": gif.data[i].images.fixed_width_still.url,
-				"gif-animated": gif.data[i].images.fixed_width.url,
+				"src": gif.data[i].images.fixed_height_still.url,
+				"gif-still": gif.data[i].images.fixed_height_still.url,
+				"gif-animated": gif.data[i].images.fixed_height.url,
 				"gif-state": "still",
 				"class": "giphy"
 			});
@@ -36,6 +39,7 @@ $(".gif-button").on("click", function(){
 			$(".gif-display").append(ratingPlace);
 			$(".gif-display").append(gifImage);
 		};
+		
 	}).fail(function(){
 		$(".gif-display").html("Oops! Something didn't quite work... Try again!");
 	});
@@ -43,8 +47,7 @@ $(".gif-button").on("click", function(){
 
 });
 
-$(".giphy").on("click", function(){
-	alert("You clicked something!");
+$(document).on("click", ".giphy", function(){
 	var state = $(this).attr("gif-state");
 
 	if (state === "still"){
